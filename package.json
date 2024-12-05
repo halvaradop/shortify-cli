@@ -8,10 +8,9 @@
     "shortify": "dist/index.js"
   },
   "scripts": {
-    "build": "tsc",
     "dev": "tsc -w",
-    "link-cli": "npm unlink @halvaradop/shortify-cli && chmod +x dist/index.js && npm link @halvaradop/shortify-cli",
-    "restart": "rm -rf node_modules dist && npm unlink . && npm unlink -g . && npm unlink -g @halvaradop/shortify-cli && npm install && npm link",
+    "build": "tsc",
+    "link-cli": "pnpm unlink @halvaradop/shortify-cli && chmod +x dist/index.js && pnpm link -g",
     "format": "npx prettier --write .",
     "format:check": "npx prettier --check .",
     "test": "vitest --run",
@@ -41,15 +40,16 @@
     "commander": "^12.1.0"
   },
   "devDependencies": {
-    "@types/node": "^20.14.2",
-    "dotenv": "^16.4.5",
-    "prettier": "^3.3.3",
-    "typescript": "^5.4.5",
-    "vitest": "^2.0.5"
+    "@types/node": "^20.17.9",
+    "dotenv": "^16.4.7",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
   },
   "files": [
     "dist"
   ],
+  "packageManager": "pnpm@9.12.0",
   "prettier": {
     "tabWidth": 4,
     "semi": false,
