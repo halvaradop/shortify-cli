@@ -53,19 +53,17 @@
   "prettier": {
     "tabWidth": 4,
     "semi": false,
-    "useTabs": true,
-    "singleQuote": false,
     "printWidth": 130,
     "overrides": [
       {
         "files": [
           "*.json",
-          "README",
+          "*.md",
+          "*.yml",
           "*.yaml"
         ],
         "options": {
-          "tabWidth": 2,
-          "useTabs": false
+          "tabWidth": 2
         }
       }
     ]

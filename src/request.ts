@@ -7,9 +7,9 @@ const SHORTENER_API_KEY = process.env.SHORTENER_API_KEY
  * Configuration of the headers for the request to the API
  */
 const headers = {
-	"Content-Type": "application/json",
-	Accept: "application/json",
-	Authorization: `Bearer ${SHORTENER_API_KEY}`,
+    "Content-Type": "application/json",
+    Accept: "application/json",
+    Authorization: `Bearer ${SHORTENER_API_KEY}`,
 }
 
 /**
@@ -17,21 +17,21 @@ const headers = {
  * @param source The link to be shortened
  */
 export const shortenerUrl = async (source: string, options: ShortenOptions): Promise<ShortenLink | ErrorRequest> => {
-	const fields = removeEmptyProperties(options)
-	try {
-		const request = await fetch("https://api.t.ly/api/v1/link/shorten", {
-			method: "POST",
-			headers,
-			body: JSON.stringify({
-				long_url: source,
-				...fields,
-			}),
-		})
-		const response = (await request.json()) as ShortenLinkAPI
-		return mappingResponse(response, shortenLinkInit)
-	} catch (error) {
-		return { message: "An error has occurred" }
-	}
+    const fields = removeEmptyProperties(options)
+    try {
+        const request = await fetch("https://api.t.ly/api/v1/link/shorten", {
+            method: "POST",
+            headers,
+            body: JSON.stringify({
+                long_url: source,
+                ...fields,
+            }),
+        })
+        const response = (await request.json()) as ShortenLinkAPI
+        return mappingResponse(response, shortenLinkInit)
+    } catch (error) {
+        return { message: "An error has occurred" }
+    }
 }
 
 /**
@@ -40,16 +40,16 @@ export const shortenerUrl = async (source: string, options: ShortenOptions): Pro
  * @param source The shortened link from which the statistics are to be obtained
  */
 export const getStats = async (source: string): Promise<StatisticsLink | ErrorRequest> => {
-	try {
-		const request = await fetch(`https://api.t.ly/api/v1/link/stats?short_url=${source}`, {
-			method: "GET",
-			headers,
-		})
-		const response = (await request.json()) as StatisticsLinkAPI
-		return mappingResponse(response, statisticsLinkInit)
-	} catch (error) {
-		return { message: "An error has occurred" }
-	}
+    try {
+        const request = await fetch(`https://api.t.ly/api/v1/link/stats?short_url=${source}`, {
+            method: "GET",
+            headers,
+        })
+        const response = (await request.json()) as StatisticsLinkAPI
+        return mappingResponse(response, statisticsLinkInit)
+    } catch (error) {
+        return { message: "An error has occurred" }
+    }
 }
 
 /**
@@ -59,16 +59,16 @@ export const getStats = async (source: string): Promise<StatisticsLink | ErrorRe
  * @returns A message to notify that the URL was deleted.
  */
 export const removeUrl = async (source: string): Promise<string> => {
-	try {
-		await fetch("https://api.t.ly/api/v1/link", {
-			method: "DELETE",
-			headers,
-			body: JSON.stringify({
-				short_url: source,
-			}),
-		})
-		return "The link has been successfully removed"
-	} catch (error) {
-		return "An error has occurred"
-	}
+    try {
+        await fetch("https://api.t.ly/api/v1/link", {
+            method: "DELETE",
+            headers,
+            body: JSON.stringify({
+                short_url: source,
+            }),
+        })
+        return "The link has been successfully removed"
+    } catch (error) {
+        return "An error has occurred"
+    }
 }

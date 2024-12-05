@@ -8,9 +8,9 @@ import type { ShortenLink, StatisticsLink } from "./types"
  * @returns {true} whether the URL is valid
  */
 export const checkValidUrl = (url: string): boolean => {
-	return new RegExp("^(https?:\\/\\/)?([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}(\\:\\d+)?(\\/[-a-zA-Z0-9@:%_\\+.~#?&//=]*)?$", "i").test(
-		url,
-	)
+    return new RegExp("^(https?:\\/\\/)?([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}(\\:\\d+)?(\\/[-a-zA-Z0-9@:%_\\+.~#?&//=]*)?$", "i").test(
+        url,
+    )
 }
 
 /**
@@ -21,7 +21,7 @@ export const checkValidUrl = (url: string): boolean => {
  * @returns The colored message as a string
  */
 export const errorColor = (str: string) => {
-	return `\x1b[31m${str}\x1b[0m`
+    return `\x1b[31m${str}\x1b[0m`
 }
 
 /**
@@ -33,17 +33,17 @@ export const errorColor = (str: string) => {
  * @returns An object of type 'to' with the values received from the API.
  */
 export const mappingResponse = <From extends Record<string, any>, To extends Record<string, any>>(from: From, to: To): To => {
-	return Object.keys(from).reduce((previous, key) => {
-		const entryKey = underscoreToUppercase(key)
-		if (entryKey in to) {
-			const isObject = typeof from[key] === "object" && from[key]
-			return {
-				...previous,
-				[entryKey]: isObject ? mappingResponse(from[key], to[entryKey]) : from[key],
-			}
-		}
-		return previous
-	}, {} as To)
+    return Object.keys(from).reduce((previous, key) => {
+        const entryKey = underscoreToUppercase(key)
+        if (entryKey in to) {
+            const isObject = typeof from[key] === "object" && from[key]
+            return {
+                ...previous,
+                [entryKey]: isObject ? mappingResponse(from[key], to[entryKey]) : from[key],
+            }
+        }
+        return previous
+    }, {} as To)
 }
 
 /**
@@ -53,24 +53,24 @@ export const mappingResponse = <From extends Record<string, any>, To extends Rec
  * @returns The transformed string.
  */
 const underscoreToUppercase = (str: string): string => {
-	return str
-		.split("_")
-		.map((word, index) => (index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)))
-		.join("")
+    return str
+        .split("_")
+        .map((word, index) => (index === 0 ? word : word.charAt(0).toUpperCase() + word.slice(1)))
+        .join("")
 }
 
 /**
  * Object used to initialize the mapping object.
  */
 export const statisticsLinkInit: StatisticsLink = {
-	clicks: 0,
-	uniqueClicks: 0,
-	data: {
-		createdAt: "",
-		longUrl: "",
-		shortUrl: "",
-		description: "",
-	},
+    clicks: 0,
+    uniqueClicks: 0,
+    data: {
+        createdAt: "",
+        longUrl: "",
+        shortUrl: "",
+        description: "",
+    },
 }
 
 /**
@@ -86,15 +86,15 @@ export const statisticsLinkInit: StatisticsLink = {
  * @returns The cleaned object.
  */
 export const removeEmptyProperties = <T extends Record<string, any>>(entry: T) => {
-	for (const key in entry) {
-		const pairValue = entry[key]
-		const isArray = Array.isArray(pairValue)
-		const isObject = pairValue && typeof pairValue === "object" && !isArray
-		if (!pairValue || pairValue === "" || (isArray && !pairValue.length) || (isObject && !Object.keys(pairValue).length)) {
-			delete entry[key]
-		}
-	}
-	return entry
+    for (const key in entry) {
+        const pairValue = entry[key]
+        const isArray = Array.isArray(pairValue)
+        const isObject = pairValue && typeof pairValue === "object" && !isArray
+        if (!pairValue || pairValue === "" || (isArray && !pairValue.length) || (isObject && !Object.keys(pairValue).length)) {
+            delete entry[key]
+        }
+    }
+    return entry
 }
 
 /**
@@ -104,7 +104,7 @@ export const removeEmptyProperties = <T extends Record<string, any>>(entry: T) =
  * @returns true if the domain name is valid, false otherwise.
  */
 export const checkValidDomain = (domain: string): boolean => {
-	return new RegExp("^([a-z0-9]+(-[a-z0-9]+)*.)+[a-z]{2,}$").test(domain)
+    return new RegExp("^([a-z0-9]+(-[a-z0-9]+)*.)+[a-z]{2,}$").test(domain)
 }
 
 /**
@@ -114,7 +114,7 @@ export const checkValidDomain = (domain: string): boolean => {
  * @returns true if the sequence is a number, false otherwise.
  */
 export const isNumber = (sequence: string): boolean => {
-	return new RegExp("^[0-9]+$").test(sequence)
+    return new RegExp("^[0-9]+$").test(sequence)
 }
 
 /**
@@ -124,15 +124,15 @@ export const isNumber = (sequence: string): boolean => {
  * @returns true if the sequence is alphanumeric, false otherwise.
  */
 export const isAlphabetNumeric = (sequence: string): boolean => {
-	return new RegExp("^[A-Za-z0-9-_]{1,}$").test(sequence)
+    return new RegExp("^[A-Za-z0-9-_]{1,}$").test(sequence)
 }
 
 export const shortenLinkInit: ShortenLink = {
-	domain: "",
-	createdAt: "",
-	description: "",
-	longUrl: "",
-	shortId: "",
-	shortUrl: "",
-	updtedAt: "",
+    domain: "",
+    createdAt: "",
+    description: "",
+    longUrl: "",
+    shortId: "",
+    shortUrl: "",
+    updtedAt: "",
 }
