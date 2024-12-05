@@ -26,12 +26,12 @@ This represents the long URL you want to shorten. For guaranteed success, it's r
 
 These flags let you customize the shortened URL and manage your existing links:
 
--   \-s or \--stats: View detailed statistics for a specific shortened URL, providing insights into its usage
--   \-r or \--remove: Permanently remove a shortened URL from your list
--   \-c or \--create (default): Creates a shortened URL based on the provided source URL.
--   \-d or \--domain: Define a custom domain (if supported by the shortening service) for your shortened URLs
--   \-i or \--short-id: Customize the unique identifier (short code) for the shortened URL, allowing you to create more memorable links.
--   \-h or \--help: To learn more about the settings and flags available in the package.
+- \-s or \--stats: View detailed statistics for a specific shortened URL, providing insights into its usage
+- \-r or \--remove: Permanently remove a shortened URL from your list
+- \-c or \--create (default): Creates a shortened URL based on the provided source URL.
+- \-d or \--domain: Define a custom domain (if supported by the shortening service) for your shortened URLs
+- \-i or \--short-id: Customize the unique identifier (short code) for the shortened URL, allowing you to create more memorable links.
+- \-h or \--help: To learn more about the settings and flags available in the package.
 
 ## Examples
 
