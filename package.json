@@ -11,8 +11,8 @@
     "dev": "tsc -w",
     "build": "tsc",
     "link-cli": "pnpm unlink @halvaradop/shortify-cli && chmod +x dist/index.js && pnpm link -g",
-    "format": "npx prettier --write .",
-    "format:check": "npx prettier --check .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "test": "vitest --run",
     "test:watch": "vitest"
   },
