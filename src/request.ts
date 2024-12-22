@@ -1,52 +1,66 @@
-import type { ErrorRequest, ShortenLink, ShortenLinkAPI, ShortenOptions, StatisticsLinkAPI, StatisticsLink } from "./types"
-import { mappingResponse, removeEmptyProperties, shortenLinkInit, statisticsLinkInit } from "./utils"
-
-const SHORTENER_API_KEY = process.env.SHORTENER_API_KEY
+import type {
+    ErrorRequest,
+    ShortenURLAPIResponse,
+    ShortenURLAPIOptions,
+    DeleteURLAPIResponse,
+    UpdateURLAPIOptions,
+} from "./types"
 
 /**
- * Configuration of the headers for the request to the API
+ * Make a GET request to the API
+ *
+ * @param {RequestInit} init The configuration object for the request
+ * @returns {Promise<T>} The response from the API
+ * @internal
  */
-const headers = {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-    Authorization: `Bearer ${SHORTENER_API_KEY}`,
+const getRequest = async <T extends object>(route: string, init: RequestInit = {}): Promise<T> => {
+    try {
+        const { headers: headersInit, ...spread } = init
+        const signal = new AbortController().signal
+        const response = await fetch(`https://api.manyapis.com//${route}`, {
+            signal,
+            headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+                "x-api-key": process.env.SHORTENER_API_KEY!,
+                ...headersInit,
+            },
+            ...spread,
+        })
+        const json = await response.json()
+        return json as T
+    } catch (error) {
+        console.error(error)
+        throw error
+    }
 }
 
 /**
  * Shorten a link and return the new link information.
- * @param source The link to be shortened
+ *
+ * @param {ShortenURLAPIOptions} options The options to configure the shortened link
+ * @returns {Promise<string>} The shortened link or an error message
  */
-export const shortenerUrl = async (source: string, options: ShortenOptions): Promise<ShortenLink | ErrorRequest> => {
-    const fields = removeEmptyProperties(options)
+export const shortenerURL = async (options: ShortenURLAPIOptions): Promise<ShortenURLAPIResponse | ErrorRequest> => {
     try {
-        const request = await fetch("https://api.t.ly/api/v1/link/shorten", {
+        return await getRequest<ShortenURLAPIResponse>("v1-create-short-url", {
             method: "POST",
-            headers,
-            body: JSON.stringify({
-                long_url: source,
-                ...fields,
-            }),
+            body: JSON.stringify(options),
         })
-        const response = (await request.json()) as ShortenLinkAPI
-        return mappingResponse(response, shortenLinkInit)
     } catch (error) {
         return { message: "An error has occurred" }
     }
 }
 
 /**
- *  Gets the statistics of a previously created shortened link.
+ * Get the short version of a URL.
  *
- * @param source The shortened link from which the statistics are to be obtained
+ * @param {string} sid The short ID of the URL
+ * @returns {Promise<ShortenURLAPIResponse | ErrorRequest>} The short URL or an error message
  */
-export const getStats = async (source: string): Promise<StatisticsLink | ErrorRequest> => {
+export const getShortURL = async (sid: string): Promise<ShortenURLAPIResponse | ErrorRequest> => {
     try {
-        const request = await fetch(`https://api.t.ly/api/v1/link/stats?short_url=${source}`, {
-            method: "GET",
-            headers,
-        })
-        const response = (await request.json()) as StatisticsLinkAPI
-        return mappingResponse(response, statisticsLinkInit)
+        return await getRequest<ShortenURLAPIResponse>(`v1-get-short-url?sid=${sid}`)
     } catch (error) {
         return { message: "An error has occurred" }
     }
@@ -55,20 +69,32 @@ export const getStats = async (source: string): Promise<StatisticsLink | ErrorRe
 /**
  * Remove a URL from the user's history
  *
- * @param source The URL to be removed
- * @returns A message to notify that the URL was deleted.
+ * @param {string} sid - The URL to be removed
+ * @returns {Promise<DeleteURLAPIResponse | ErrorRequest>} A message to notify that the URL was deleted.
  */
-export const removeUrl = async (source: string): Promise<string> => {
+export const deleteURL = async (sid: string): Promise<DeleteURLAPIResponse | ErrorRequest> => {
     try {
-        await fetch("https://api.t.ly/api/v1/link", {
-            method: "DELETE",
-            headers,
-            body: JSON.stringify({
-                short_url: source,
-            }),
+        return getRequest<DeleteURLAPIResponse>(`v1-delete-short-url?sid=${sid}`, {
+            method: "POST",
         })
-        return "The link has been successfully removed"
     } catch (error) {
-        return "An error has occurred"
+        return { message: "An error has occurred" }
+    }
+}
+
+/**
+ * Update a URL with new information
+ *
+ * @param {UpdateURLAPIOptions} options The new information to update the URL
+ * @returns {Promise<ShortenURLAPIResponse | ErrorRequest>} The updated URL or an error message
+ */
+export const updateURL = async (options: UpdateURLAPIOptions): Promise<ShortenURLAPIResponse | ErrorRequest> => {
+    try {
+        return getRequest<ShortenURLAPIResponse>(`v1-update-short-url`, {
+            method: "PUT",
+            body: JSON.stringify(options),
+        })
+    } catch (error) {
+        return { message: "An error has occurred" }
     }
 }
