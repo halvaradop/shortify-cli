@@ -1,3 +1,5 @@
+import { OutputConfiguration } from "commander"
+
 /**
  * Check if the URL received is a valid URL or it throws an error
  * to notify that the URL passed is not valid.
@@ -49,7 +51,7 @@ export const isNumber = (sequence: string): boolean => {
  * @returns {boolean} true if the sequence is alphanumeric, false otherwise.
  */
 export const isAlphabetNumeric = (sequence: string): boolean => {
-    return new RegExp("^[A-Za-z0-9-_]{1,}$").test(sequence)
+    return new RegExp("^[A-Za-z0-9]+$").test(sequence)
 }
 
 /**
@@ -60,4 +62,13 @@ export const isAlphabetNumeric = (sequence: string): boolean => {
  */
 export const checkExpiry = (expiry: string): boolean => {
     return new RegExp("^([0-9]+[dhmy]|never)$").test(expiry)
+}
+
+export const configureOutput: OutputConfiguration = {
+    writeErr: (error: string) => {
+        process.stdout.write(`${errorColor("[ERROR]:")} ${error}`)
+    },
+    outputError: (str, write) => {
+        write(errorColor(str))
+    },
 }
