@@ -15,5 +15,5 @@ export const shortenerCommand = async (url: string, options: CLIOptions) => {
         return console.error("Invalid expiry date, verify the structure of the date")
     }
     const { expiry } = options
-    console.log(shortenerURL({ url, expiry }))
+    console.log(await shortenerURL({ url, expiry }))
 }
