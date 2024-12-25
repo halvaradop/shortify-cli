@@ -10,5 +10,5 @@ export const deleteCommand = async (options: CLIOptions) => {
     if (!isAlphabetNumeric(options.sid) || !options) {
         return console.error("Invalid short ID, verify the structure of the link")
     }
-    console.log(deleteURL(options.sid))
+    console.log(await deleteURL(options.sid))
 }

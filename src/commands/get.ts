@@ -10,5 +10,5 @@ export const getCommand = async (options: CLIOptions) => {
     if (!isAlphabetNumeric(options.sid) || !options.sid) {
         return console.error("Invalid short ID, verify the structure of the link")
     }
-    console.log(getShortURL(options.sid))
+    console.log(await getShortURL(options.sid))
 }

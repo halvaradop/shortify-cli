@@ -1,37 +1,42 @@
 # @halvaradop/shortify-cli
 
-@halvaradop/shortify-cli is a powerful terminal-based tool that helps you shorten lengthy URLs for easier sharing and management. It offers a variety of options to customize URLs according to your style, view statistics of shortened links, and maintain a list of your creations.
+A CLI tool to shorten lengthy URLs for easier sharing and management.
 
 ## Installation
 
-Install the package globally using npm
+Install the package globally using npm or pnpm:
 
 ```bash
-npm i -g @halvaradop/shortify-cli
+# npm
+npm install -g @halvaradop/shortify-cli
+
+# pnpm
+pnpm install -g @halvaradop/shortify-cli
 ```
 
 ## Usage
 
-Shortify CLI provides a clear structure for shortening URLs
+Shortify CLI provides a simple way to shorten URLs:
 
 ```bash
-shortify <source-url> [options]
+shortify <url> [options]
 ```
 
-## \<source-url\>
+### Arguments
 
-This represents the long URL you want to shorten. For guaranteed success, it's recommended to enclose the URL in quotes, especially if it contains special characters.
+- `url`: The long URL you want to shorten. Enclose the URL in quotes if it contains special characters.
 
-## [options]
+### Options
 
-These flags let you customize the shortened URL and manage your existing links:
+- `-V, --version`: Output the version number.
+- `-e, --expiry <expiry>`: Set an expiry date for the link (default: "never").
+- `-h, --help`: Display help for the command.
 
-- \-s or \--stats: View detailed statistics for a specific shortened URL, providing insights into its usage
-- \-r or \--remove: Permanently remove a shortened URL from your list
-- \-c or \--create (default): Creates a shortened URL based on the provided source URL.
-- \-d or \--domain: Define a custom domain (if supported by the shortening service) for your shortened URLs
-- \-i or \--short-id: Customize the unique identifier (short code) for the shortened URL, allowing you to create more memorable links.
-- \-h or \--help: To learn more about the settings and flags available in the package.
+### Commands
+
+- `get [options]`: Get information about a short link.
+- `delete [options]`: Delete a short link.
+- `update [options]`: Update a short link.
 
 ## Examples
 
@@ -40,12 +45,22 @@ These flags let you customize the shortened URL and manage your existing links:
 shortify "https://www.example.com/very-long-url"
 
 # View statistics for a shortened URL
-shortify -s "https://your-shortened-link.com"  # Replace with your actual shortened URL
+shortify get -s sid-generate-shortened
+shortify get --sid sid-generate-shortened
 
 # Remove a shortened URL
-shortify -r "https://your-shortened-link.com"  # Replace with your actual shortened URL
+shortify delete -s sid-generate-shortened
+shortify delete --sid sid-generate-shortened
 
-# Create a shortened URL with a custom short code
-shortify "https://www.example.com/another-long-url" -i "my-custom-code"
-
+# Create a shortened URL with a custom expiry
+shortify update -s sid-generate-shortened -e 10d
+shortify update --sid sid-generate-shortened --expiry 10d
 ```
+
+## Contributing
+
+We welcome contributions to `@halvaradop/shortify-cli`! If you have an idea for a new feature or find an improvement to an existing one, please feel free to open an issue or create a pull request. We offer a guide on how to contribute to the project and the necessary steps to do so. Read our [Contributing Guideline](https://github.com/halvaradop/.github/blob/master/.github/CONTRIBUTING.md).
+
+## Code of Conduct
+
+Please be aware that this project has a code of conduct, and we expect all contributors to follow these guidelines in their interactions. For more information, please read our [Code of Conduct](https://github.com/halvaradop/.github/blob/master/.github/CODE_OF_CONDUCT.md).

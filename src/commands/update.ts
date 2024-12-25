@@ -14,5 +14,5 @@ export const updateCommand = async (options: CLIOptions) => {
         return console.error("Invalid expiry date, verify the structure of the date")
     }
     const { sid, expiry } = options
-    console.log(updateURL({ sid, expiry }))
+    console.log(await updateURL({ sid, expiry }))
 }
