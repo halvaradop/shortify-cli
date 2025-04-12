@@ -4,7 +4,7 @@ import type {
     ShortenURLAPIOptions,
     DeleteURLAPIResponse,
     UpdateURLAPIOptions,
-} from "./types"
+} from "./types.js"
 
 /**
  * Make a GET request to the API

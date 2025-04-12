@@ -1,18 +1,22 @@
-import { CLIOptions } from "../types"
-import { updateURL } from "../request"
-import { checkExpiry, isAlphabetNumeric } from "../utils"
+import type { CLIOptions } from "../types.js"
+import { updateURL } from "../request.js"
+import { checkExpiry, isAlphabetNumeric } from "../utils.js"
+import { info, error } from "./logger.js"
 
 /**
  * Update a short link
+ *
  * @param {CLIOptions} options - The options to be used in the command
  */
 export const updateCommand = async (options: CLIOptions) => {
     if (!isAlphabetNumeric(options.sid)) {
-        return console.error("Invalid short ID, verify the structure of the link")
+        error("Invalid short ID, verify the structure of the link")
+        return
     }
     if (!checkExpiry(options.expiry)) {
-        return console.error("Invalid expiry date, verify the structure of the date")
+        error("Invalid expiry date, verify the structure of the date")
+        return
     }
     const { sid, expiry } = options
-    console.log(await updateURL({ sid, expiry }))
+    info(await updateURL({ sid, expiry }))
 }

@@ -2,8 +2,8 @@
 
 import "dotenv/config"
 import { Command } from "commander"
-import { configureOutput, errorColor } from "./utils"
-import { shortenerCommand, getCommand, deleteCommand, updateCommand } from "./commands/index"
+import { configureOutput, errorColor } from "./utils.js"
+import { shortenerCommand, getCommand, deleteCommand, updateCommand, loggerCommand, configCommand } from "./commands/index.js"
 
 /**
  * Declare and initialize the program
@@ -14,7 +14,7 @@ const program = new Command()
 program
     .name("shortify")
     .description("Shorten your favorite URL using the CLI.")
-    .version("0.0.1")
+    .version("0.1.0")
     .usage("<url> [options]")
 
 /**
@@ -52,6 +52,31 @@ program
     .option("-s, --sid <sid>", "The short ID of the URL")
     .option("-e, --expiry <expiry>", "set an expiry date for the link", "never")
     .action(updateCommand)
+
+/**
+ * Show the current logger level
+ */
+program
+    .command("logger")
+    .description("Show the current logger level")
+    .option("-c, --config", "Show the current logger level")
+    .option("-r, --reset", "Reset the current logger level")
+    .option("--colors", "Show the current logger level with colors")
+    .option("--info <color>", "Set the info color logger")
+    .option("--warn <color>", "Set the warn color logger")
+    .option("--error [color]", "Set the error color logger")
+    .action(loggerCommand)
+
+/**
+ * Show the current configuration
+ */
+program
+    .command("config")
+    .description("Show the current configuration")
+    .option("-c, --config", "Show the current configuration")
+    .option("--api-key <key>", "Set the API key")
+    .option("-r, --reset", "Reset the current configuration")
+    .action(configCommand)
 
 /**
  * Show help after an error
