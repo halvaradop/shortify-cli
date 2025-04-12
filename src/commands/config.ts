@@ -43,14 +43,16 @@ export const readConfig = (): ConfigOptions => {
  *
  * @param {ConfigOptions} config - The configuration options to write.
  */
-export const writeConfig = async (config: Partial<ConfigOptions>) => {
+export const updateConfig = async (config: Partial<ConfigOptions>): Promise<ConfigOptions> => {
     try {
         const defaultConfig = readConfig()
         const newConfig = { ...defaultConfig, ...config }
         writeFileSync(configPath, JSON.stringify(newConfig, null, 2))
         info("Config file updated successfully.")
+        return newConfig
     } catch (e) {
         error("Error writing config file:", e)
+        return defaultConfig
     }
 }
 
@@ -60,7 +62,7 @@ export const writeConfig = async (config: Partial<ConfigOptions>) => {
  *
  * @param {boolean} force - Whether to overwrite the existing configuration file.
  */
-const createConfig = async (force: boolean = false) => {
+export const createConfig = async (force: boolean = false) => {
     const config = configPath
     if (!existsSync(config) || force) {
         if (force) {
@@ -68,7 +70,7 @@ const createConfig = async (force: boolean = false) => {
         } else {
             info("Creating config file with default values.")
         }
-        writeConfig(defaultConfig)
+        updateConfig(defaultConfig)
     } else {
         warn("The config file already exists. Use --reset to overwrite.")
     }
@@ -82,15 +84,16 @@ const createConfig = async (force: boolean = false) => {
  */
 export const configCommand = async (options: ConfigCommandOptions) => {
     if (!Object.keys(options).length) {
-        info("Configuration:", readConfig())
+        info("Configuration:", JSON.stringify(readConfig(), null, 2))
         return
     }
     if (options.reset) {
         createConfig(true)
+        info("Configuration has been reset to default values.")
         return
     }
     if (options.apiKey) {
-        writeConfig({ apiKey: options.apiKey })
-        info("API key updated successfully.")
+        updateConfig({ apiKey: options.apiKey })
+        info("API key has been updated successfully.")
     }
 }

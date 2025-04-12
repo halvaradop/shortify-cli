@@ -11,11 +11,11 @@ import { info, error } from "./logger.js"
  */
 export const shortenerCommand = async (url: string, options: Pick<CLIOptions, "expiry">) => {
     if (!checkValidURL(url)) {
-        error("Invalid URL, verify the structure of the link")
+        error("Invalid URL. Please ensure the URL is properly formatted and try again.")
         return
     }
     if (!checkExpiry(options.expiry)) {
-        error("Invalid expiry date, verify the structure of the date")
+        error("Invalid expiry date. Please use a valid format (e.g., '7d', '1m', 'never').")
         return
     }
     const { expiry } = options

@@ -10,7 +10,7 @@ import { info, error } from "./logger.js"
  */
 export const deleteCommand = async (options: Pick<CLIOptions, "sid">) => {
     if (!isAlphabetNumeric(options.sid) || !options) {
-        error("Invalid short ID, verify the structure of the link")
+        error("Invalid short ID. Please verify the structure of the link and try again.")
         return
     }
     info(await deleteURL(options.sid))

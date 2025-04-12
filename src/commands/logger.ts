@@ -1,4 +1,4 @@
-import { defaultConfig, readConfig, writeConfig } from "./config.js"
+import { defaultConfig, readConfig, updateConfig } from "./config.js"
 import type { Logger, LoggerCommandOptions, LoggerOptions } from "../types.js"
 
 /**
@@ -102,16 +102,18 @@ export const createLogger = (): Logger => {
 export const updateLoggerColor = (logger: keyof LoggerOptions, newColor: keyof typeof colors) => {
     const color = Object.entries(colors).find(([key]) => newColor === key)?.[1]
     if (!color) {
-        error("Invalid color for info logger")
+        const loggerType = logger.charAt(0).toUpperCase() + logger.slice(1)
+        error(`Invalid color for ${loggerType} logger`)
         return
     }
-    writeConfig({
+    updateConfig({
         logger: {
             ...defaultConfig.logger,
             [logger]: color,
         },
     })
-    info("Logger info color updated")
+    const loggerType = logger.charAt(0).toUpperCase() + logger.slice(1)
+    info(`${loggerType} logger color updated`)
 }
 
 /**
@@ -136,7 +138,7 @@ export const loggerCommand = (options: LoggerCommandOptions) => {
     }
     if (options.reset) {
         info("Resetting logger configuration to default")
-        writeConfig({
+        updateConfig({
             logger: {
                 info: colors.blue,
                 warn: colors.yellow,

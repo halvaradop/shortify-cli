@@ -10,7 +10,7 @@ import { info, error } from "./logger.js"
  */
 export const getCommand = async (options: Pick<CLIOptions, "sid">) => {
     if (!isAlphabetNumeric(options.sid) || !options.sid) {
-        error("Invalid short ID, verify the structure of the link")
+        error("Invalid short ID. Please verify the structure of the link and try again.")
         return
     }
     info(await getShortURL(options.sid))

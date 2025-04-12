@@ -10,11 +10,11 @@ import { info, error } from "./logger.js"
  */
 export const updateCommand = async (options: CLIOptions) => {
     if (!isAlphabetNumeric(options.sid)) {
-        error("Invalid short ID, verify the structure of the link")
+        error("Invalid short ID. Please verify the structure of the link and try again.")
         return
     }
     if (!checkExpiry(options.expiry)) {
-        error("Invalid expiry date, verify the structure of the date")
+        error("Invalid expiry date. Please use a valid format (e.g., '7d', '1m', 'never').")
         return
     }
     const { sid, expiry } = options
