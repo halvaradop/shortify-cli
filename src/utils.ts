@@ -1,4 +1,5 @@
 import { OutputConfiguration } from "commander"
+import { colors } from "./commands/logger.js"
 
 /**
  * Check if the URL received is a valid URL or it throws an error
@@ -7,21 +8,10 @@ import { OutputConfiguration } from "commander"
  * @param {string} url  link to be verified
  * @returns {boolean} whether the URL is valid
  */
-export const checkValidURL = (url: string): boolean => {
-    return new RegExp("^(https?:\\/\\/)?([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}(\\:\\d+)?(\\/[-a-zA-Z0-9@:%_\\+.~#?&//=]*)?$", "i").test(
+export const isValidURL = (url: string): boolean => {
+    return new RegExp("^(https?:\\/\\/)([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}(\\:\\d+)?(\\/[-a-zA-Z0-9@:%_\\+.~#?&//=]*)?$", "i").test(
         url,
     )
-}
-
-/**
- * Paints a message with a red color in the output terminal
- * using ANSI escape codes.
- *
- * @param {string} str The message to be printed in red
- * @returns {string} The colored message as a string
- */
-export const errorColor = (str: string): string => {
-    return `\x1b[31m${str}\x1b[0m`
 }
 
 /**
@@ -29,8 +19,9 @@ export const errorColor = (str: string): string => {
  *
  * @param {string} domain - The domain name to be verified.
  * @returns {boolean} true if the domain name is valid, false otherwise.
+ * @deprecated
  */
-export const checkValidDomain = (domain: string): boolean => {
+export const isValidDomain = (domain: string): boolean => {
     return new RegExp("^([a-z0-9]+(-[a-z0-9]+)*.)+[a-z]{2,}$").test(domain)
 }
 
@@ -60,15 +51,15 @@ export const isAlphabetNumeric = (sequence: string): boolean => {
  * @param {string} expiry - The expiry to be verified.
  * @returns {boolean} true if the expiry is valid, false otherwise.
  */
-export const checkExpiry = (expiry: string): boolean => {
-    return new RegExp("^([0-9]+[dhmy]|never)$").test(expiry)
+export const isExpiry = (expiry: string): boolean => {
+    return new RegExp("^([0-9]+[dh])$").test(expiry)
 }
 
 export const configureOutput: OutputConfiguration = {
     writeErr: (error: string) => {
-        process.stdout.write(`${errorColor("[ERROR]:")} ${error}`)
+        process.stdout.write(`${colors.red} [ERROR]: ${error}`)
     },
     outputError: (str, write) => {
-        write(errorColor(str))
+        write(`${colors.red}${str}`)
     },
 }

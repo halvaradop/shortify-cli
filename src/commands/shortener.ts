@@ -1,19 +1,24 @@
-import { CLIOptions } from "../types"
-import { shortenerURL } from "../request"
-import { checkExpiry, checkValidURL } from "../utils"
+import { shortenerURL } from "../request.js"
+import { isExpiry, isValidURL } from "../utils.js"
+import { info, error } from "./logger.js"
+import type { CLIOptions } from "../types.js"
 
 /**
  * Shorten a URL
+ *
  * @param {string} url - The URL to be shortened
  * @param {CLIOptions} options - The options to be used in the command
  */
-export const shortenerCommand = async (url: string, options: CLIOptions) => {
-    if (!checkValidURL(url)) {
-        return console.error("Invalid URL, verify the structure of the link")
+export const shortenerCommand = async (url: string, options: Pick<CLIOptions, "expiry">) => {
+    if (!isValidURL(url)) {
+        error("Invalid URL. Please ensure the URL is properly formatted and try again.")
+        return
     }
-    if (!checkExpiry(options.expiry)) {
-        return console.error("Invalid expiry date, verify the structure of the date")
+    if (!isExpiry(options.expiry)) {
+        error("Invalid expiry date. Please use a valid format (e.g., '7d', '1m', 'never').")
+        return
     }
     const { expiry } = options
-    console.log(await shortenerURL({ url, expiry }))
+    console.log(`URL: ${url}, Expiry: ${expiry}`)
+    info(await shortenerURL({ url, expiry }))
 }

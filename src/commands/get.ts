@@ -1,14 +1,17 @@
-import { CLIOptions } from "../types"
-import { getShortURL } from "../request"
-import { isAlphabetNumeric } from "../utils"
+import { getShortURL } from "../request.js"
+import { isAlphabetNumeric } from "../utils.js"
+import { info, error } from "./logger.js"
+import type { CLIOptions } from "../types.js"
 
 /**
  * Get  the information about a short link
+ *
  * @param {CLIOptions} options - The options to be used in the command
  */
-export const getCommand = async (options: CLIOptions) => {
+export const getCommand = async (options: Pick<CLIOptions, "sid">) => {
     if (!isAlphabetNumeric(options.sid) || !options.sid) {
-        return console.error("Invalid short ID, verify the structure of the link")
+        error("Invalid short ID. Please verify the structure of the link and try again.")
+        return
     }
-    console.log(await getShortURL(options.sid))
+    info(await getShortURL(options.sid))
 }

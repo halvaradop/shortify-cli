@@ -37,6 +37,8 @@ shortify <url> [options]
 - `get [options]`: Get information about a short link.
 - `delete [options]`: Delete a short link.
 - `update [options]`: Update a short link.
+- `logger [options]`: Manage and view logger settings
+- `config [options]`: View and modify application configuration
 
 ## Examples
 
@@ -53,8 +55,16 @@ shortify delete -s sid-generate-shortened
 shortify delete --sid sid-generate-shortened
 
 # Create a shortened URL with a custom expiry
-shortify update -s sid-generate-shortened -e 10d
-shortify update --sid sid-generate-shortened --expiry 10d
+shortify update -s sid-generate-shortened -e 10h
+shortify update --sid sid-generate-shortened --expiry 10h
+
+# Update logger color for info, warn and error
+shortify logger --info white
+shortify logger --warn yellow
+shortify logger --error red
+
+# See the current configuration
+shortify config
 ```
 
 ## Contributing

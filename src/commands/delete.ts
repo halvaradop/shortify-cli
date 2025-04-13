@@ -1,14 +1,17 @@
-import { CLIOptions } from "../types"
-import { deleteURL } from "../request"
-import { isAlphabetNumeric } from "../utils"
+import { deleteURL } from "../request.js"
+import { isAlphabetNumeric } from "../utils.js"
+import { info, error } from "./logger.js"
+import type { CLIOptions } from "../types.js"
 
 /**
  * Delete a short link
+ *
  * @param {CLIOptions} options - The options to be used in the command
  */
-export const deleteCommand = async (options: CLIOptions) => {
+export const deleteCommand = async (options: Pick<CLIOptions, "sid">) => {
     if (!isAlphabetNumeric(options.sid) || !options) {
-        return console.error("Invalid short ID, verify the structure of the link")
+        error("Invalid short ID. Please verify the structure of the link and try again.")
+        return
     }
-    console.log(await deleteURL(options.sid))
+    info(await deleteURL(options.sid))
 }
