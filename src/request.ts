@@ -1,3 +1,5 @@
+import { readConfig } from "./commands/config.js"
+import { error } from "./commands/logger.js"
 import type {
     ErrorRequest,
     ShortenURLAPIResponse,
@@ -13,11 +15,16 @@ import type {
  * @returns {Promise<T>} The response from the API
  * @internal
  */
-const getRequest = async <T extends object>(route: string, init: RequestInit = {}): Promise<T> => {
+const customFetch = async <T extends object>(route: string, init: RequestInit = {}): Promise<T> => {
     try {
+        const { apiKey } = readConfig()
+        if (!apiKey) {
+            error("API key not found. Please set it in the configuration.")
+            return {} as T
+        }
         const { headers: headersInit, ...spread } = init
         const signal = new AbortController().signal
-        const response = await fetch(`https://api.manyapis.com//${route}`, {
+        const response = await fetch(`https://api.manyapis.com/${route}`, {
             signal,
             headers: {
                 "Content-Type": "application/json",
@@ -29,9 +36,9 @@ const getRequest = async <T extends object>(route: string, init: RequestInit = {
         })
         const json = await response.json()
         return json as T
-    } catch (error) {
-        console.error(error)
-        throw error
+    } catch (message) {
+        error(message)
+        throw message
     }
 }
 
@@ -43,7 +50,7 @@ const getRequest = async <T extends object>(route: string, init: RequestInit = {
  */
 export const shortenerURL = async (options: ShortenURLAPIOptions): Promise<ShortenURLAPIResponse | ErrorRequest> => {
     try {
-        return await getRequest<ShortenURLAPIResponse>("v1-create-short-url", {
+        return await customFetch<ShortenURLAPIResponse>("v1-create-short-url", {
             method: "POST",
             body: JSON.stringify(options),
         })
@@ -60,7 +67,7 @@ export const shortenerURL = async (options: ShortenURLAPIOptions): Promise<Short
  */
 export const getShortURL = async (sid: string): Promise<ShortenURLAPIResponse | ErrorRequest> => {
     try {
-        return await getRequest<ShortenURLAPIResponse>(`v1-get-short-url?sid=${sid}`)
+        return await customFetch<ShortenURLAPIResponse>(`v1-get-short-url?sid=${sid}`)
     } catch (error) {
         return { message: "An error has occurred" }
     }
@@ -74,7 +81,7 @@ export const getShortURL = async (sid: string): Promise<ShortenURLAPIResponse | 
  */
 export const deleteURL = async (sid: string): Promise<DeleteURLAPIResponse | ErrorRequest> => {
     try {
-        return getRequest<DeleteURLAPIResponse>(`v1-delete-short-url?sid=${sid}`, {
+        return customFetch<DeleteURLAPIResponse>(`v1-delete-short-url?sid=${sid}`, {
             method: "POST",
         })
     } catch (error) {
@@ -90,7 +97,7 @@ export const deleteURL = async (sid: string): Promise<DeleteURLAPIResponse | Err
  */
 export const updateURL = async (options: UpdateURLAPIOptions): Promise<ShortenURLAPIResponse | ErrorRequest> => {
     try {
-        return getRequest<ShortenURLAPIResponse>(`v1-update-short-url`, {
+        return customFetch<ShortenURLAPIResponse>(`v1-update-short-url`, {
             method: "PUT",
             body: JSON.stringify(options),
         })

@@ -1,7 +1,7 @@
-import type { CLIOptions } from "../types.js"
 import { updateURL } from "../request.js"
 import { checkExpiry, isAlphabetNumeric } from "../utils.js"
 import { info, error } from "./logger.js"
+import type { CLIOptions } from "../types.js"
 
 /**
  * Update a short link

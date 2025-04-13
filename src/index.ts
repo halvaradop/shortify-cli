@@ -2,8 +2,16 @@
 
 import "dotenv/config"
 import { Command } from "commander"
-import { configureOutput, errorColor } from "./utils.js"
-import { shortenerCommand, getCommand, deleteCommand, updateCommand, loggerCommand, configCommand } from "./commands/index.js"
+import { configureOutput } from "./utils.js"
+import {
+    shortenerCommand,
+    getCommand,
+    deleteCommand,
+    updateCommand,
+    loggerCommand,
+    configCommand,
+    error,
+} from "./commands/index.js"
 
 /**
  * Declare and initialize the program
@@ -22,7 +30,7 @@ program
  */
 program
     .argument("<url>", "URL to shorten")
-    .option("-e, --expiry <expiry>", "set an expiry date for the link", "never")
+    .option("-e, --expiry <expiry>", "set an expiry date for the link", "12h")
     .action(shortenerCommand)
 
 /**
@@ -82,7 +90,7 @@ program
  * Show help after an error
  */
 program
-    .showHelpAfterError(errorColor("You can execute (shortify --help) for additional information"))
+    .showHelpAfterError(!error("You can execute (shortify --help) for additional information"))
     .configureOutput(configureOutput)
 
 /**

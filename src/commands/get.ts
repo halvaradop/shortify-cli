@@ -1,7 +1,7 @@
-import type { CLIOptions } from "../types.js"
 import { getShortURL } from "../request.js"
 import { isAlphabetNumeric } from "../utils.js"
 import { info, error } from "./logger.js"
+import type { CLIOptions } from "../types.js"
 
 /**
  * Get  the information about a short link

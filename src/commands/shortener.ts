@@ -1,7 +1,7 @@
-import type { CLIOptions } from "../types.js"
 import { shortenerURL } from "../request.js"
 import { checkExpiry, checkValidURL } from "../utils.js"
 import { info, error } from "./logger.js"
+import type { CLIOptions } from "../types.js"
 
 /**
  * Shorten a URL
@@ -19,5 +19,6 @@ export const shortenerCommand = async (url: string, options: Pick<CLIOptions, "e
         return
     }
     const { expiry } = options
+    console.log(`URL: ${url}, Expiry: ${expiry}`)
     info(await shortenerURL({ url, expiry }))
 }

@@ -1,4 +1,5 @@
 import { OutputConfiguration } from "commander"
+import { colors } from "./commands/logger.js"
 
 /**
  * Check if the URL received is a valid URL or it throws an error
@@ -11,17 +12,6 @@ export const checkValidURL = (url: string): boolean => {
     return new RegExp("^(https?:\\/\\/)?([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}(\\:\\d+)?(\\/[-a-zA-Z0-9@:%_\\+.~#?&//=]*)?$", "i").test(
         url,
     )
-}
-
-/**
- * Paints a message with a red color in the output terminal
- * using ANSI escape codes.
- *
- * @param {string} str The message to be printed in red
- * @returns {string} The colored message as a string
- */
-export const errorColor = (str: string): string => {
-    return `\x1b[31m${str}\x1b[0m`
 }
 
 /**
@@ -61,14 +51,14 @@ export const isAlphabetNumeric = (sequence: string): boolean => {
  * @returns {boolean} true if the expiry is valid, false otherwise.
  */
 export const checkExpiry = (expiry: string): boolean => {
-    return new RegExp("^([0-9]+[dhmy]|never)$").test(expiry)
+    return new RegExp("^([0-9]+[dh])$").test(expiry)
 }
 
 export const configureOutput: OutputConfiguration = {
     writeErr: (error: string) => {
-        process.stdout.write(`${errorColor("[ERROR]:")} ${error}`)
+        process.stdout.write(`${colors.red} [ERROR]: ${error}`)
     },
     outputError: (str, write) => {
-        write(errorColor(str))
+        write(`${colors.red}${str}`)
     },
 }
