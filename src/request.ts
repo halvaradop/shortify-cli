@@ -29,7 +29,7 @@ const customFetch = async <T extends object>(route: string, init: RequestInit = 
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
-                "x-api-key": process.env.SHORTENER_API_KEY!,
+                "x-api-key": apiKey!,
                 ...headersInit,
             },
             ...spread,

@@ -62,28 +62,28 @@ program
     .action(updateCommand)
 
 /**
- * Show the current logger level
+ * Manage logger settings
  */
 program
     .command("logger")
-    .description("Show the current logger level")
-    .option("-c, --config", "Show the current logger level")
-    .option("-r, --reset", "Reset the current logger level")
-    .option("--colors", "Show the current logger level with colors")
-    .option("--info <color>", "Set the info color logger")
-    .option("--warn <color>", "Set the warn color logger")
-    .option("--error [color]", "Set the error color logger")
+    .description("Manage and view logger settings")
+    .option("-c, --config", "Display the current logger configuration")
+    .option("-r, --reset", "Reset logger settings to default")
+    .option("--colors", "Display logger output with colors")
+    .option("--info <color>", "Set the color for info level logs")
+    .option("--warn <color>", "Set the color for warning level logs")
+    .option("--error [color]", "Set the color for error level logs")
     .action(loggerCommand)
 
 /**
- * Show the current configuration
+ * Manage application configuration
  */
 program
     .command("config")
-    .description("Show the current configuration")
-    .option("-c, --config", "Show the current configuration")
-    .option("--api-key <key>", "Set the API key")
-    .option("-r, --reset", "Reset the current configuration")
+    .description("View and modify application configuration")
+    .option("-c, --config", "Display the current application configuration")
+    .option("--api-key <key>", "Set the API key for the application")
+    .option("-r, --reset", "Reset application configuration to default")
     .action(configCommand)
 
 /**
